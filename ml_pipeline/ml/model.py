@@ -58,3 +58,7 @@ def inference(model, X):
         Predictions from the model.
     """
     pass
+
+
+def save_model(model, path):
+    pass
