@@ -1,8 +1,8 @@
 import setuptools
 
 setuptools.setup(
-    name="starter",
+    name="ml_pipeline",
     version="0.0.0",
-    description="Starter code.",
-    author="Student",
+    description="ML pipeline code.",
+    author="Zhaohan Sun",
 )
