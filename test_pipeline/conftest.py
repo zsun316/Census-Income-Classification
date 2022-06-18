@@ -7,7 +7,6 @@ from ml_pipeline.ml.data import load_data
 from fastapi.testclient import TestClient
 
 
-
 @pytest.fixture(scope='session')
 def data():
     """
