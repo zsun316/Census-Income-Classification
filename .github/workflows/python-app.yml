@@ -39,7 +39,7 @@ jobs:
 
     - name: Pull data
       run: |
-        dvc pull -R
+        dvc pull
 
     - name: Lint with flake8
       run: |
