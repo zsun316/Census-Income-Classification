@@ -1,5 +1,4 @@
 from sklearn.linear_model import LogisticRegression
-from ml_pipeline.ml.data import load_data
 import pandas as pd
 import numpy as np
 import pytest
