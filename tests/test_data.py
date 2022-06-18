@@ -30,6 +30,7 @@ def test_column_presence_and_type(data):
     # Check continuous column presence
     assert set(data.columns.values).issuperset(set(required_quant_columns.keys())), "Missing required quant variable"
 
+    # Check continuous column data types
     for col, format_verification_func in required_quant_columns.items():
         assert format_verification_func(data[col]), f"Column {col} failed test {format_verification_func}"
 
