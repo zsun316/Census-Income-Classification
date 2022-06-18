@@ -1,5 +1,4 @@
 import pytest
-import yaml
 import os
 import numpy as np
 import pandas as pd
