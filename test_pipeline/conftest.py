@@ -9,12 +9,12 @@ from fastapi.testclient import TestClient
 @pytest.fixture(scope='session')
 def data():
     """
-    Get dataset
+        Get dataset
     """
     root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
     file_name = "census.csv"
     file_path = os.path.join(root_path, "data")
 
-    return load_data(file_path, 'census.csv')
+    return load_data(file_path, file_name)
 
