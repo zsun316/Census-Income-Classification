@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
+import os
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 
-def load_data(data_path):
-    df = pd.read_csv(data_path, )
+def load_data(root_path, file_name):
+    path = os.path.join(root_path, "data", file_name)
+    df = pd.read_csv(path, low_memory=False)
+
     return df
 
 
