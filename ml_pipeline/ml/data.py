@@ -1,22 +1,53 @@
 import numpy as np
 import pandas as pd
 import os
-from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+from sklearn.preprocessing import LabelBinarizer, OneHotEncoder, OrdinalEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
 
 
 def load_data(root_path, file_name):
+    """
+
+    Parameters
+    ----------
+    root_path: path of the root dir
+    file_name: file name
+
+    Returns: either raw df or preprocessed df
+    -------
+
+    """
     path = os.path.join(root_path, "data", file_name)
     df = pd.read_csv(path, low_memory=False)
 
     return df
 
 
-def save_data(data: pd.DataFrame, path):
-    data.to_csv(path, sep=",")
+def save_data(df: pd.DataFrame, root_path, file_name):
+    """
+
+    Parameters
+    ----------
+    df:          pd.DataFrame to be saved.
+    root_path:   path of the root dir
+    file_name:   file name
+
+    Returns:     None
+    -------
+
+    """
+    df.to_csv(os.path.join(root_path, 'data', file_name))
 
 
 def process_data(
-        X, categorical_features=[], label=None, training=True, encoder=None, lb=None
+        X,
+        categorical_features=[],
+        label=None,
+        training=True,
+        encoder=None,
+        lb=None,
+        preprocessor=None,
 ):
     """ Process the data used in the machine learning pipeline.
 
@@ -63,21 +94,48 @@ def process_data(
     else:
         y = np.array([])
 
-    X_categorical = X[categorical_features].values
-    X_continuous = X.drop(*[categorical_features], axis=1)
+    # X_categorical = X[categorical_features].values
+    # X_continuous = X.drop(*[categorical_features], axis=1)
 
+    continuous_features = list(set(X.columns) - set(categorical_features))
     if training is True:
-        encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ("continuous_feats", StandardScaler(), continuous_features),
+                ("non_ordinal_cat", OneHotEncoder(sparse=False, handle_unknown="ignore"), categorical_features)
+            ],
+            remainder="drop"  # This drops the columns that we do not transform
+        )
+
         lb = LabelBinarizer()
-        X_categorical = encoder.fit_transform(X_categorical)
+        X = preprocessor.fit_transform(X)
         y = lb.fit_transform(y.values).ravel()
     else:
-        X_categorical = encoder.transform(X_categorical)
+        X = preprocessor.transform(X)
         try:
             y = lb.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
         except AttributeError:
             pass
 
-    X = np.concatenate([X_continuous, X_categorical], axis=1)
-    return X, y, encoder, lb
+    # X = np.concatenate([X_continuous, X_categorical], axis=1)
+    return X, y, preprocessor, lb
+
+
+if __name__ == "__main__":
+    root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    file_name = "preprocessed_census.csv"
+    proc_df = load_data(root_path, file_name)
+
+    cat_feats = [
+        'workclass',
+        'education',
+        'marital-status',
+        'occupation',
+        'relationship',
+        'race',
+        'sex',
+        'native-country'
+    ]
+
+    X, y, preprocessor, lb = process_data(proc_df, cat_feats, 'salary')
