@@ -35,6 +35,10 @@ def test_column_presence_and_type(data):
         assert format_verification_func(data[col]), f"Column {col} failed test {format_verification_func}"
 
 
+def test_data_shape(data):
+    """ If your data is assumed to have no null values then this is a valid test. """
+    assert data.shape == data.dropna().shape, "Dropping null changes shape."
 
 
-
+def test_inference_process(model):
+    pass

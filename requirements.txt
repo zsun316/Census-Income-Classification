@@ -6,3 +6,6 @@ requests
 fastapi==0.78.0
 uvicorn
 gunicorn
+lightgbm
+joblib
+yaml
