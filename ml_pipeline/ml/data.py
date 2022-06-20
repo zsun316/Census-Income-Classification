@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-from sklearn.preprocessing import LabelBinarizer, OneHotEncoder, OrdinalEncoder, StandardScaler
+from sklearn.preprocessing import LabelBinarizer, OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 
@@ -24,7 +24,7 @@ def load_data(root_path, file_name):
     return df
 
 
-def save_data(df: pd.DataFrame, root_path, file_name):
+def save_data(df, root_path, file_name):
     """
 
     Parameters
@@ -37,7 +37,7 @@ def save_data(df: pd.DataFrame, root_path, file_name):
     -------
 
     """
-    df.to_csv(os.path.join(root_path, 'data', file_name))
+    df.to_csv(os.path.join(root_path, 'data', file_name), index=False)
 
 
 def process_data(

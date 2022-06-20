@@ -1,8 +1,9 @@
 # Script to train machine learning model.
-
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
-from .ml.data import load_data, save_data, process_data
-from .ml.model import save_model, train_model, compute_model_metrics, inference
+from ml.data import load_data, save_data, process_data
+from ml.model import save_model, train_model, compute_model_metrics, inference
 
 import os
 
@@ -12,6 +13,7 @@ root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 data = load_data(root_path, "preprocessed_census.csv")
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20, random_state=42)
+
 
 cat_features = [
     "workclass",
@@ -42,15 +44,18 @@ X_test, y_test, _, _ = process_data(
 )
 
 # Train a model.
-model = train_model(X_train, y_train)
+model, params = train_model(X_train, y_train)
 y_pred = inference(model, X_test)
 precision, recall, f_beta = compute_model_metrics(y_test, y_pred)
 
+print("best parameters", params)
+print('precision:', precision)
+print('recall', recall)
+print('f_beta_score', f_beta)
+
 # save data
-save_data(X_train, root_path, 'X_train.csv')
-save_data(X_test, root_path, 'X_test.csv')
-save_data(y_train, root_path, 'y_train.csv')
-save_data(y_test, root_path, 'y_test.csv')
+save_data(train, root_path, 'train.csv')
+save_data(test, root_path, 'test.csv')
 
 
 # save model

@@ -38,10 +38,9 @@ def train_model(X_train, y_train):
 
     lgb_model = lgb.LGBMClassifier()
     param_grid = {
-        'num_leaves': [7, 14, 21, 31, 50],
-        'max_depth': [-1, 3, 5, 7, 16],
-        'n_estimators': [100, 200],
-        'learning_rate': [0.1, 0.01]
+        'num_leaves': [8, 16, 31, 50, 100, 1000],
+        'max_depth': [3, 5, 7, 10],
+        'reg_alpha': [0.001, 0.01, 0.05, 0.1]
     }
 
     lgb_cv = GridSearchCV(estimator=lgb_model,
@@ -49,7 +48,7 @@ def train_model(X_train, y_train):
                           n_jobs=-1)
     lgb_cv.fit(X_train, y_train)
 
-    return lgb_cv.best_estimator_
+    return lgb_cv.best_estimator_, lgb_cv.best_params_
 
 
 def compute_model_metrics(y, preds):
