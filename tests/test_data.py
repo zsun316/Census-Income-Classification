@@ -33,12 +33,18 @@ def test_column_presence_and_type(data):
     # Check continuous column data types
     for col, format_verification_func in required_quant_columns.items():
         assert format_verification_func(data[col]), f"Column {col} failed test {format_verification_func}"
+    # print("--------------", 'test_column_presence_and_type passed', "--------------")
 
 
 def test_data_shape(data):
     """ If your data is assumed to have no null values then this is a valid test. """
     assert data.shape == data.dropna().shape, "Dropping null changes shape."
+    # print("--------------", 'test_data_shape passed', "--------------")
 
 
-def test_inference_process(model):
-    pass
+def test_inference_process(metrics):
+    assert metrics['precision'] > 0.5, "Invalid precision"
+    assert metrics['recall'] > 0.5, "Invalid recall"
+    assert metrics['fbeta'] > 0.5, "Invalid f-beta score"
+
+

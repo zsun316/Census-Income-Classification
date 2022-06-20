@@ -35,3 +35,19 @@ def model():
     trained_model = joblib.load(os.path.join(root_path, "model", model_name))
 
     return trained_model
+
+
+@pytest.fixture(scope='session')
+def metrics():
+    """
+        Get Model
+    Returns
+    -------
+
+    """
+    root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    metrics_name = "metrics.pkl"
+
+    trained_metrics = joblib.load(os.path.join(root_path, "model", metrics_name))
+
+    return trained_metrics
