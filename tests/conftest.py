@@ -21,6 +21,7 @@ def data():
     return df
 
 
+@pytest.fixture(scope='session')
 def model():
     """
         Get Model
