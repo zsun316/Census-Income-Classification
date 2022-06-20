@@ -5,7 +5,7 @@ import pandas as pd
 import joblib
 
 from fastapi.testclient import TestClient
-from ml_pipeline.ml.data import load_data
+# from ..ml_pipeline.ml.data import load_data
 
 
 @pytest.fixture(scope='session')
@@ -31,4 +31,6 @@ def model(root_path):
     root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
     model_name = "model.pkl"
 
-    joblib.load(os.path.join(root_path, "model", model_name))
+    trained_model = joblib.load(os.path.join(root_path, "model", model_name))
+
+    return trained_model
