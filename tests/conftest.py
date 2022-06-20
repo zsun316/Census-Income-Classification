@@ -21,7 +21,7 @@ def data():
     return df
 
 
-def model(root_path):
+def model():
     """
         Get Model
     Returns
