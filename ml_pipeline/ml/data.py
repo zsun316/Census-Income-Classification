@@ -45,7 +45,6 @@ def process_data(
         categorical_features=[],
         label=None,
         training=True,
-        encoder=None,
         lb=None,
         preprocessor=None,
 ):
@@ -115,8 +114,8 @@ def process_data(
         try:
             y = lb.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
-        except AttributeError:
-            pass
+        except AttributeError as err:
+            print("Unexpected error: y is None")
 
     # X = np.concatenate([X_continuous, X_categorical], axis=1)
     return X, y, preprocessor, lb

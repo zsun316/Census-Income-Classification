@@ -1,4 +1,22 @@
+import numpy as np
+import pandas as pd
+import lightgbm as lgb
+import joblib
+import os
+
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.model_selection import GridSearchCV
+
+
+def load_model(root_path, model_name):
+    with open(os.path.join(root_path, "model", model_name), "rb") as f:
+        model = joblib.load(f)
+    return model
+
+
+def save_model(model, root_path, model_name):
+    with open(os.path.join(root_path, "model", model_name), "wb") as f:
+        joblib.dump(model, f)
 
 
 # Optional: implement hyperparameter tuning.
@@ -18,7 +36,20 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
 
-    pass
+    lgb_model = lgb.LGBMClassifier()
+    param_grid = {
+        'num_leaves': [7, 14, 21, 31, 50],
+        'max_depth': [-1, 3, 5, 7, 16],
+        'n_estimators': [100, 200],
+        'learning_rate': [0.1, 0.01]
+    }
+
+    lgb_cv = GridSearchCV(estimator=lgb_model,
+                          param_grid=param_grid,
+                          n_jobs=-1)
+    lgb_cv.fit(X_train, y_train)
+
+    return lgb_cv.best_estimator_
 
 
 def compute_model_metrics(y, preds):
@@ -57,8 +88,7 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    y_pred = model.predict(X)
+    return y_pred
 
 
-def save_model(model, path):
-    pass
