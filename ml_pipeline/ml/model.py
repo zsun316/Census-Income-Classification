@@ -91,32 +91,32 @@ def inference(model, X):
     return y_pred
 
 
-def compute_slice_metrics(X_test,
+def compute_slice_metrics(test_data,
                           y_test,
                           y_pred,
-                          cat_feats):
+                          cat_feats: list):
     """
 
     Parameters
     ----------
-    X_test: test data to be used for cal metrics
-    y_test: true labels.
+    test_data: test data to be used for cal metrics
+    y_test: binary labels
     y_pred: predictions
-    cat_feats: categorical features
-
+    cat_feats: list of categorical features
     Returns
     -------
 
     """
     y_test = pd.Series(np.squeeze(y_test))
     y_pred = pd.Series(np.squeeze(y_pred))
+    X_test = test_data[cat_feats]
 
     df_test = pd.concat([X_test, y_test, y_pred], axis=1)
-    df_test.columns = list(X_test.columns) + ['y_test', 'y_pred']
+    df_test.columns = cat_feats + ['y_test', 'y_pred']
 
-    TP = df_test[df_test['y_test'] == 1].groupby(cat_feats).sum()
-    FN = df_test[df_test['y_test'] == 1].groupby(cat_feats).apply(lambda x: x.count() - x.sum())
-    FP = df_test[df_test['y_test'] == 0].groupby(cat_feats).sum()
+    TP = df_test[df_test['y_test'] == 1].groupby(cat_feats).y_pred.sum()
+    FN = df_test[df_test['y_test'] == 1].groupby(cat_feats).y_pred.apply(lambda x: x.count() - x.sum())
+    FP = df_test[df_test['y_test'] == 0].groupby(cat_feats).y_pred.sum()
 
     precision = TP/(TP + FP)
     recall = TP/(TP + FN)

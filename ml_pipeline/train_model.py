@@ -48,11 +48,6 @@ model, params = train_model(X_train, y_train)
 y_pred = inference(model, X_test)
 precision, recall, f_beta = compute_model_metrics(y_test, y_pred)
 
-slice_metrics = compute_slice_metrics(X_test=X_test,
-                                      y_test=y_test,
-                                      y_pred=y_pred,
-                                      cat_feats=cat_features)
-
 
 print("best parameters", params)
 print('precision:', precision)
@@ -63,7 +58,17 @@ print('f_beta_score', f_beta)
 save_data(train, root_path, 'train.csv')
 save_data(test, root_path, 'test.csv')
 
-save_data(slice_metrics, root_path, 'slice_metrics.csv')
+
+with open(os.path.join(root_path, 'performance', 'slice_metrics.txt'), 'w') as f:
+    for cat_feat in cat_features:
+        f.write('-------------{cat_feat}-------------')
+        slice_metrics = compute_slice_metrics(test_data=test,
+                                              y_test=y_test,
+                                              y_pred=y_pred,
+                                              cat_feats=[cat_feat])
+        f.write(slice_metrics.to_string())
+        f.write(f"\n")
+
 
 # save model
 save_model(model, root_path, "model.pkl")
