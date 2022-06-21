@@ -48,7 +48,10 @@ model, params = train_model(X_train, y_train)
 y_pred = inference(model, X_test)
 precision, recall, f_beta = compute_model_metrics(y_test, y_pred)
 
-slice_metrics = compute_slice_metrics(X_test, y_test, y_pred, cat_features)
+slice_metrics = compute_slice_metrics(X_test=X_test,
+                                      y_test=y_test,
+                                      y_pred=y_pred,
+                                      cat_feats=cat_features)
 
 
 print("best parameters", params)
