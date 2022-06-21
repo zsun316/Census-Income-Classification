@@ -91,3 +91,42 @@ def inference(model, X):
     return y_pred
 
 
+def compute_slice_metrics(X_test,
+                          y_test,
+                          y_pred,
+                          cat_feats):
+    """
+
+    Parameters
+    ----------
+    X_test: test data to be used for cal metrics
+    y_test: true labels.
+    y_pred: predictions
+    cat_feats: categorical features
+
+    Returns
+    -------
+
+    """
+    y_test = pd.Series(np.squeeze(y_test))
+    y_pred = pd.Series(np.squeeze(y_pred))
+
+    df_test = pd.concat([X_test, y_test, y_pred], axis=1)
+    df_test.columns = list(X_test.columns) + ['y_test', 'y_pred']
+
+    TP = df_test[df_test['y_test'] == 1].groupby(cat_feats).sum()
+    FN = df_test[df_test['y_test'] == 1].groupby(cat_feats).apply(lambda x: x.count() - x.sum())
+    FP = df_test[df_test['y_test'] == 0].groupby(cat_feats).sum()
+
+    precision = TP/(TP + FP)
+    recall = TP/(TP + FN)
+    f_score = 2/(1/precision + 1/recall)
+
+    slice_metrics = pd.concat([precision, recall, f_score], axis=1)
+    slice_metrics.columns = ['precision', 'recall', 'f_score']
+
+    return slice_metrics
+
+
+
+
