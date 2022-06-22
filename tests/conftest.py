@@ -1,10 +1,13 @@
 import pytest
 import os
+import sys
 import numpy as np
 import pandas as pd
 import joblib
 
 from fastapi.testclient import TestClient
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from main import app
 
 
