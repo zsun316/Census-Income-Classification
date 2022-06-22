@@ -34,7 +34,7 @@ class Data(BaseModel):
     native_country: Optional[Union[str, list]] = Field(['United-States', 'United-States'],
                                                        alias='native-country')
 
-root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root_path = os.path.dirname(os.path.abspath(__file__))
 model = load_model(root_path, 'model.pkl')
 preprocessor = load_model(root_path, 'preprocessor.pkl')
 lb = load_model(root_path, 'lb.pkl')
