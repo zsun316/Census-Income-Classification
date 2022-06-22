@@ -34,7 +34,7 @@ class Data(BaseModel):
     native_country: Optional[Union[str, list]] = Field(['United-States', 'United-States'],
                                                        alias='native-country')
 
-root_path = os.path.dirname(os.path.abspath(__file__))
+root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 model = load_model(root_path, 'model.pkl')
 preprocessor = load_model(root_path, 'preprocessor.pkl')
 lb = load_model(root_path, 'lb.pkl')
@@ -67,12 +67,13 @@ async def model_inference(data: Data):
 
     df = pd.DataFrame(inputData)
 
-    X, _, _, _ = process_data(
+    X, y, _, _ = process_data(
         df,
         categorical_features=cat_features,
+        label="salary",
+        training=False,
         preprocessor=preprocessor,
-        lb=lb,
-        training=False
+        lb=lb
     )
 
     pred = list(inference(model, X))
