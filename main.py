@@ -18,16 +18,16 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
 
 class Data(BaseModel):
-    age: int = Field(..., example=30)
-    workclass: str = Field(..., example='State-gov')
-    fnlgt:  int = Field(..., example=100000)
-    education: str = Field(..., example='Bachelors')
-    education_num: int = Field(..., example=13, alias='education-num')
-    marital_status: str = Field(..., example='Never-married', alias='marital-status')
-    occupation: str = Field(..., example='Adm-clerical')
-    relationship: str = Field(..., example='Wife')
-    race: str = Field(..., example='White')
-    sex: str = Field(..., example='Male')
+    age: Optional[Union[int, list]] = [39, 52]
+    workclass: Optional[Union[str, list]] = ['State-gov', 'Self-emp-inc']
+    fnlgt: Optional[Union[int, list]] = [77516, 287927]
+    education: Optional[Union[str, list]] = ['Bachelors', 'HS-grad']
+    education_num: Optional[Union[int, list]] = Field([13, 9], alias='education-num')
+    marital_status: Optional[Union[str, list]] = Field(['Never-married', 'Married-civ-spouse'], alias='marital-status')
+    occupation: Optional[Union[str, list]] = ['Adm-clerical', 'Exec-managerial']
+    relationship: Optional[Union[str, list]] = ['Not-in-family', 'Wife']
+    race: Optional[Union[str, list]] = ['White', 'White']
+    sex: Optional[Union[str, list]] = ['Male', 'Female']
     capital_gain: Optional[Union[int, list]] = Field([2174, 15024], alias='capital-gain')
     capital_loss: Optional[Union[int, list]] = Field([0, 0], alias='capital-loss')
     hours_per_week: Optional[Union[int, list]] = Field([40, 40], alias='hours-per-week')
