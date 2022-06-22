@@ -5,7 +5,7 @@ import pandas as pd
 import joblib
 
 from fastapi.testclient import TestClient
-# from ..ml_pipeline.ml.data import load_data
+from main import app
 
 
 @pytest.fixture(scope='session')
@@ -51,3 +51,26 @@ def metrics():
     trained_metrics = joblib.load(os.path.join(root_path, "model", metrics_name))
 
     return trained_metrics
+
+
+@pytest.fixture(scope='session')
+def test_api_example():
+    root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    file_name = "preprocessed_census.csv"
+    file_path = os.path.join(root_path, "data", file_name)
+
+    df = pd.read_csv(file_path, low_memory=False)
+
+    zero_exp = df[df['salary'] == '<=50K'].iloc[0].drop('salary')
+    one_exp = df[df['salary'] == '>50K'].iloc[0].drop('salary')
+
+    return zero_exp, one_exp
+
+
+@pytest.fixture(scope='session')
+def client():
+    """
+    Get dataset
+    """
+    client = TestClient(app)
+    return client
