@@ -19,7 +19,7 @@ def test_inference_exp1(client, test_api_example):
     r = client.post('/model_inference', json=data)
     assert r.status_code == 200
     assert "prediction" in r.json()
-    assert r.json()["prediction"] == "<=50K"
+    assert r.json()["prediction"] == ["<=50K"]
 
 
 def test_inference_exp2(client, test_api_example):
@@ -28,6 +28,5 @@ def test_inference_exp2(client, test_api_example):
     r = client.post('/model_inference', json=data)
     assert r.status_code == 200
     assert "prediction" in r.json()
-    assert r.json()["prediction"] == ">50K"
-
+    assert r.json()["prediction"] == [">50K"]
 

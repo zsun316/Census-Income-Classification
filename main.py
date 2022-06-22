@@ -67,7 +67,7 @@ async def model_inference(data: Data):
 
     df = pd.DataFrame(inputData)
 
-    X, y, _, _ = process_data(
+    X, _, _, _ = process_data(
         df,
         categorical_features=cat_features,
         label='salary',
@@ -76,8 +76,14 @@ async def model_inference(data: Data):
         training=False
     )
 
-    pred = inference(model, X)
-    return {"prediction": lb.inverse_transform(pred)[0]}
+    pred = list(inference(model, X))
+    for key, val in enumerate(pred):
+        if val == 0:
+            pred[key] = '<=50K'
+        else:
+            pred[key] = '>50K'
+
+    return {"prediction": pred}
 
 
 
