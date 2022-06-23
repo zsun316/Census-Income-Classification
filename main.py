@@ -48,7 +48,7 @@ async def get_items():
 
 
 @app.post("/model_inference")
-async def model_inference(data: Data):
+async def predict(data: Data):
     cat_features = [
         "workclass",
         "education",
