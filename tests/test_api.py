@@ -14,7 +14,7 @@ def test_get(client):
 
 
 def test_inference_exp1(client, test_api_example):
-    data = test_api_example[0].to_dict()
+    data = test_api_example[0]
 
     r = client.post('/inference', json=data)
     assert r.status_code == 200
@@ -23,7 +23,7 @@ def test_inference_exp1(client, test_api_example):
 
 
 def test_inference_exp2(client, test_api_example):
-    data = test_api_example[1].to_dict()
+    data = test_api_example[1]
 
     r = client.post('/inference', json=data)
     assert r.status_code == 200

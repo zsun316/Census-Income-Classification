@@ -67,7 +67,7 @@ def test_api_example():
     zero_exp = df[df['salary'] == '<=50K'].iloc[0].drop('salary')
     one_exp = df[df['salary'] == '>50K'].iloc[0].drop('salary')
 
-    return [zero_exp, one_exp]
+    return [zero_exp.to_dict(), one_exp.to_dict()]
 
 
 @pytest.fixture(scope='session')
