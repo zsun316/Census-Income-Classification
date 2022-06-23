@@ -65,7 +65,7 @@ def test_api_example():
     df = pd.read_csv(file_path, low_memory=False)
 
     zero_exp = df[df['salary'] == '<=50K'].iloc[0].drop('salary')
-    one_exp = df[df['salary'] == '>50K'].iloc[2].drop('salary')
+    one_exp = df[df['salary'] == '>50K'].iloc[1].drop('salary')
 
     return [zero_exp, one_exp]
 
