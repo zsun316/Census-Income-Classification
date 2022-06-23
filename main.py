@@ -47,7 +47,7 @@ async def get_items():
     return {"message": "Welcome to lightGBM model deployment!"}
 
 
-@app.post("/model_inference")
+@app.post("/inference")
 async def predict(data: Data):
     cat_features = [
         "workclass",
