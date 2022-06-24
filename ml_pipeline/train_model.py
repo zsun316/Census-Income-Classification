@@ -59,7 +59,7 @@ save_data(train, root_path, 'train.csv')
 save_data(test, root_path, 'test.csv')
 
 
-with open(os.path.join(root_path, 'performance', 'slice_metrics.txt'), 'w') as f:
+with open(os.path.join(root_path, 'performance', 'slice_output.txt'), 'w') as f:
     for cat_feat in cat_features:
         f.write('-------------{cat_feat}-------------')
         slice_metrics = compute_slice_metrics(test_data=test,
