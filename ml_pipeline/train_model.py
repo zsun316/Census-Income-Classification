@@ -7,6 +7,21 @@ from ml.model import save_model, train_model, compute_model_metrics, inference, 
 
 import os
 
+
+def get_slice_performance(test_data, ytest, ypred, output_file):
+    cat_feature = test_data.select_dtypes(object).columns
+
+    with open(os.path.join(root_path, 'performance', output_file), 'w') as f:
+        for cat_feat in cat_feature:
+            f.write('-------------{cat_feat}-------------')
+            slice_metrics = compute_slice_metrics(test_data=test_data,
+                                                  y_test=ytest,
+                                                  y_pred=ypred,
+                                                  cat_feats=[cat_feat])
+            f.write(slice_metrics.to_string())
+            f.write(f"\n")
+
+
 # Add the necessary imports for the starter code.
 root_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 # Add code to load in the data.
@@ -58,16 +73,12 @@ print('f_beta_score', f_beta)
 save_data(train, root_path, 'train.csv')
 save_data(test, root_path, 'test.csv')
 
-
-with open(os.path.join(root_path, 'performance', 'slice_output.txt'), 'w') as f:
-    for cat_feat in cat_features:
-        f.write('-------------{cat_feat}-------------')
-        slice_metrics = compute_slice_metrics(test_data=test,
-                                              y_test=y_test,
-                                              y_pred=y_pred,
-                                              cat_feats=[cat_feat])
-        f.write(slice_metrics.to_string())
-        f.write(f"\n")
+get_slice_performance(
+    test.loc[:, test.columns != 'salary'],
+    y_test,
+    y_pred,
+    'slice_output.txt'
+)
 
 
 # save model
